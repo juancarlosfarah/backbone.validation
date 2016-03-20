@@ -73,18 +73,20 @@ Backbone.Validation = (function(_){
     prefix = prefix || '';
 
     _.each(obj, function(val, key) {
-      if(obj.hasOwnProperty(key)) {
-        if (!!val && _.isArray(val)) {
-          _.forEach(val, function(v, k) {
-            flatten(v, into, prefix + key + '.' + k + '.');
-            into[prefix + key + '.' + k] = v;
-          });
-        } else if (!!val && typeof val === 'object' && val.constructor === Object) {
-          flatten(val, into, prefix + key + '.');
-        }
+      if (key[0] !== '_') {
+        if(obj.hasOwnProperty(key)) {
+          if (!!val && _.isArray(val)) {
+            _.forEach(val, function(v, k) {
+              flatten(v, into, prefix + key + '.' + k + '.');
+              into[prefix + key + '.' + k] = v;
+            });
+          } else if (!!val && typeof val === 'object' && val.constructor === Object) {
+            flatten(val, into, prefix + key + '.');
+          }
 
-        // Register the current level object as well
-        into[prefix + key] = val;
+          // Register the current level object as well
+          into[prefix + key] = val;
+        }
       }
     });
 
